@@ -37,269 +37,13 @@
       href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300&family=Wix+Madefor+Display:wght@700&display=swap"
       rel="stylesheet"
     />
-    <style>
-      html {
-        box-sizing: border-box;
-        font-size: 16px;
-        font-family: "Space Grotesk", sans-serif;
-      }
-
-      *,
-      *:before,
-      *:after {
-        box-sizing: inherit;
-      }
-
-      body,
-      h1,
-      h2,
-      h3,
-      h4,
-      h5,
-      h6,
-      p,
-      ol,
-      ul {
-        margin: 0;
-        padding: 0;
-        font-weight: normal;
-      }
-
-      ol,
-      ul {
-        list-style: none;
-      }
-
-      img {
-        max-width: 100%;
-        height: auto;
-      }
-
-      body {
-        background: #03dac6;
-      }
-
-      .main-layout {
-        display: grid;
-        grid-template-rows: auto 1fr auto;
-        height: 100vh;
-        overflow: auto;
-      }
-
-      header {
-        background-color: #03dac6;
-        display: flex;
-        flex: none;
-        flex-direction: row;
-        justify-content: center;
-        padding: 100px 50px;
-        width: 100%;
-      }
-
-      .hero {
-        align-items: center;
-        background-color: #3700b3;
-        display: flex;
-        flex: 1 0 0px;
-        flex-grow: 1;
-        flex-shrink: 0;
-        flex-basis: 0px;
-        flex-direction: column;
-        flex-wrap: nowrap;
-        height: min-content;
-        justify-content: center;
-        max-width: 1000px;
-        overflow: visible;
-        padding: 100px;
-        position: relative;
-        width: 1px;
-        border: 10px solid #000000;
-        text-align: center;
-      }
-
-      .hero__title {
-        font-size: max(2.3rem, 7vw);
-        white-space: nowrap;
-        font-family: "Wix Madefor Display", sans-serif;
-      }
-
-      .hero__subtitle {
-        font-family: "Space Grotesk", sans-serif;
-        font-size: 1rem;
-        font-weight: 700;
-      }
-
-      main {
-        background: #822eff;
-      }
-
-      .highlight {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        color: white;
-        max-width: 1000px;
-        width: 100%;
-        margin: 0 auto;
-        gap: 20px;
-      }
-
-      .highlight__content {
-        display: grid;
-        grid-template-rows: 1fr 1fr;
-        grid-template-columns: subgrid;
-        gap: 20px;
-      }
-
-      .highlight__icon {
-        width: 150px;
-        transform: rotate(-25deg);
-        align-self: flex-end;
-      }
-
-      .highlight_iframe {
-        padding: 40px 0;
-        height: 400px;
-        width: 100%;
-        border: none;
-      }
-
-      .highlight__title {
-        font-family: "Wix Madefor Display", sans-serif;
-        font-size: 32px;
-        line-height: 48px;
-        margin-bottom: 20px;
-      }
-
-      .navigation {
-        background: #03dac6;
-        padding: 100px;
-        display: flex;
-        justify-content: center;
-        flex-direction: column;
-        align-items: center;
-      }
-
-      .navigation__title {
-        font-family: "Wix Madefor Display", sans-serif;
-        font-size: 32px;
-        line-height: 48px;
-        white-space: nowrap;
-      }
-
-      .navigation__list {
-        display: flex;
-        flex-direction: column;
-        gap: 5px;
-        max-width: 1000px;
-        width: 100%;
-      }
-
-      .navigation__link {
-        text-decoration: none;
-        color: rgb(55, 0, 179);
-        border-bottom: 1px solid #03f3db;
-        display: flex;
-        justify-content: space-between;
-        padding: 10px;
-        align-items: center;
-        gap: 10px;
-      }
-
-      .navigation__icon {
-        width: 32px;
-        height: 32px;
-        flex-shrink: 0;
-      }
-
-      footer {
-        align-items: center;
-        background-color: #03dac6;
-        display: flex;
-        flex: none;
-        flex-direction: column;
-        flex-wrap: nowrap;
-        gap: 20px;
-        height: min-content;
-        justify-content: center;
-        overflow: hidden;
-        padding: 0 100px 100px;
-        position: relative;
-        width: 100%;
-        font-family: "Space Grotesk", sans-serif;
-      }
-
-      .fun-icons {
-        align-content: center;
-        align-items: center;
-        display: grid;
-        padding: 0 100px 50px;
-        width: 100%;
-        gap: 40px;
-        grid-auto-rows: min-content;
-        grid-template-columns: repeat(6, minmax(50px, 150px));
-        height: min-content;
-        justify-content: center;
-      }
-
-      .footer__icons {
-        display: flex;
-        gap: 20px;
-      }
-
-      .footer__copyright {
-        text-align: center;
-      }
-
-      @media (max-width: 809px) {
-        header {
-          padding: 60px 20px;
-        }
-
-        .hero {
-          padding: 60px 30px;
-        }
-
-        .highlight {
-          grid-template-columns: 1fr;
-        }
-        .highlight_image {
-          padding: 0 20px 20px;
-        }
-
-        .highlight_iframe {
-          padding: 20px;
-        }
-
-        .highlight__content {
-          padding: 20px 50px 0;
-        }
-
-        .navigation {
-          padding: 50px;
-        }
-
-        footer {
-          padding: 0 40px 20px;
-        }
-
-        .fun-icons {
-          display: grid;
-          gap: 40px;
-          grid-auto-rows: min-content;
-          grid-template-columns: repeat(2, minmax(50px, 1fr));
-          grid-template-rows: repeat(3, min-content);
-          height: min-content;
-          justify-content: center;
-          padding: 0 60px 30px;
-        }
-      }
-    </style>
+    <link rel="stylesheet" href="style.css">
   </head>
   <body>
     <div class="main-layout">
       <header class="section">
         <div class="hero">
-          <h1 class="hero__title">AGI Playground</h1>
+          <h1 class="hero__title">AI Playground</h1>
           <h2 class="hero__subtitle">
             Where Software Engineering Meets the Digital Frontier
           </h2>
@@ -323,10 +67,26 @@
               alt="An example of the game of life generated by AI"
               class="highlight_image"
             /> -->
-            <iframe
-              src="viz/gameOfLife2.html"
-              class="highlight_iframe"
-            ></iframe>
+            <a
+              href="#"
+              title="Expand"
+              onclick="window.openDialog('gameOfLife2.html');"
+              style="position: relative; display: flex"
+            >
+              <div
+                style="
+                  position: absolute;
+                  top: 0;
+                  left: 0;
+                  right: 0;
+                  bottom: 0;
+                "
+              ></div>
+              <iframe
+                src="viz/gameOfLife2.html"
+                class="highlight_iframe"
+              ></iframe>
+            </a>
           </div>
         </div>
 
@@ -334,7 +94,10 @@
           <h3 class="navigation__title">More AI creations</h3>
           <ul class="navigation__list">
             <li class="navigation__item">
-              <a href="#" class="navigation__link"
+              <a
+                href="#"
+                class="navigation__link"
+                onclick="window.openDialog('matrix2.html');"
                 ><span
                   >Matrix-inspired dropping characters animation with HTML
                   canvas</span
@@ -349,7 +112,10 @@
               ></a>
             </li>
             <li class="navigation__item">
-              <a href="#" class="navigation__link"
+              <a
+                href="#"
+                onclick="window.openDialog('stars.html');"
+                class="navigation__link"
                 ><span>A sky time-lapse in canvas</span>
                 <div class="navigation__icon">
                   <img
@@ -361,7 +127,10 @@
               ></a>
             </li>
             <li class="navigation__item">
-              <a href="#" class="navigation__link"
+              <a
+                href="#"
+                onclick="window.openDialog('chess.html');"
+                class="navigation__link"
                 ><span>Chess in html canvas</span>
                 <div class="navigation__icon">
                   <img
@@ -373,7 +142,10 @@
               ></a>
             </li>
             <li class="navigation__item">
-              <a href="#" class="navigation__link"
+              <a
+                href="#"
+                onclick="window.openDialog('maze.html');"
+                class="navigation__link"
                 ><span>A maze in canvas</span>
                 <div class="navigation__icon">
                   <img
@@ -385,7 +157,10 @@
               ></a>
             </li>
             <li class="navigation__item">
-              <a href="#" class="navigation__link"
+              <a
+                href="#"
+                onclick="window.openDialog('aiviz.html');"
+                class="navigation__link"
                 ><span>How ChatGPT visualizes an AI in d3.js</span>
                 <div class="navigation__icon">
                   <img
@@ -488,16 +263,15 @@
             title="Project's github"
           >
             <!-- github -->
-            <img src="icons/github.svg" width="32px" height="32px"alt=""
-            ></a
-          >
+            <img src="icons/github.svg" width="32px" height="32px" alt="" />
+          </a>
           <a
             href="https://juanmanuelalloron.com/"
             target="_blank"
             title="Author's blog"
           >
             <!-- blog -->
-            <img src="icons/blog.svg" width="32px" height="32px"alt=""
+            <img src="icons/blog.svg" width="32px" height="32px" alt="" />
           </a>
         </div>
         <p class="footer__copyright">
@@ -505,5 +279,43 @@
         </p>
       </footer>
     </div>
+    <dialog id="main-dialog" class="dialog">
+      <h3 id="main-dialog-title" class="highlight__title"></h3>
+      <p id="main-dialog-description" class="highlight__description"></p>
+      <iframe
+        id="main-dialog-iframe"
+        class="highlight_iframe"
+        style="height: 800px; max-width: 800px"
+      ></iframe>
+
+      <form method="dialog" class="dialog__close">
+        <button title="close dialog">
+          <img src="icons/close.svg" width="32px" height="32px" alt="" />
+        </button>
+      </form>
+    </dialog>
+
+    <script type="application/javascript">
+      function openDialog(contentURL) {
+        const iframe = document.querySelector("#main-dialog-iframe");
+
+        iframe.onload = () => {
+          const description = iframe.contentDocument
+            .querySelector('meta[name="description"]')
+            ?.getAttribute("content");
+          document.querySelector("#main-dialog-title").textContent =
+            iframe.contentDocument.title;
+          document.querySelector("#main-dialog-description").textContent =
+            description;
+          document.querySelector("#main-dialog").showModal();
+
+          iframe.onload = null;
+          console.log("called");
+        };
+
+        iframe.src = `viz/${contentURL}`;
+        return false;
+      }
+    </script>
   </body>
 </html>
