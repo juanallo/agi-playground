@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Game of Life Animation (Canvas)</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background-color: #000;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="gameOfLifeCanvas"></canvas>
+
+  <script>
+    const canvas = document.getElementById("gameOfLifeCanvas");
+    const context = canvas.getContext("2d");
+
+    canvas.width = 800;
+    canvas.height = 800;
+
+    const cellSize = 20;
+    const numRows = canvas.height / cellSize;
+    const numCols = canvas.width / cellSize;
+    const grid = createRandomGrid(numRows, numCols);
+
+    function createRandomGrid(rows, cols) {
+      const grid = [];
+      for (let i = 0; i < rows; i++) {
+        const row = [];
+        for (let j = 0; j < cols; j++) {
+          row.push(Math.random() < 0.5 ? 1 : 0); // 50% chance of being alive
+        }
+        grid.push(row);
+      }
+      return grid;
+    }
+
+    function drawGrid() {
+      context.clearRect(0, 0, canvas.width, canvas.height);
+      for (let i = 0; i < numRows; i++) {
+        for (let j = 0; j < numCols; j++) {
+          const cell = grid[i][j];
+          context.fillStyle = cell ? "#18d8ff" : "#000";
+          context.fillRect(j * cellSize, i * cellSize, cellSize, cellSize);
+        }
+      }
+    }
+
+    function updateGrid() {
+      const newGrid = createRandomGrid(numRows, numCols);
+      for (let i = 0; i < numRows; i++) {
+        for (let j = 0; j < numCols; j++) {
+          const cell = grid[i][j];
+          const neighbors = countNeighbors(i, j);
+          if (cell === 1 && (neighbors < 2 || neighbors > 3)) {
+            newGrid[i][j] = 0; // Cell dies
+          } else if (cell === 0 && neighbors === 3) {
+            newGrid[i][j] = 1; // Cell is born
+          }
+        }
+      }
+      grid.splice(0, grid.length, ...newGrid);
+    }
+
+    function countNeighbors(row, col) {
+      let count = 0;
+      for (let i = -1; i <= 1; i++) {
+        for (let j = -1; j <= 1; j++) {
+          if (i === 0 && j === 0) continue;
+          const newRow = row + i;
+          const newCol = col + j;
+          if (newRow >= 0 && newRow < numRows && newCol >= 0 && newCol < numCols) {
+            count += grid[newRow][newCol];
+          }
+        }
+      }
+      return count;
+    }
+
+    function animate() {
+      updateGrid();
+      drawGrid();
+      requestAnimationFrame(debounce(animate, 1200));
+    }
+
+    animate();
+
+    function debounce(func, delay) {
+        let timer;
+
+        return function (...args) {
+          clearTimeout(timer);
+
+          timer = setTimeout(() => {
+            func.apply(this, args);
+          }, delay);
+        };
+      }
+  </script>
+</body>
+</html>

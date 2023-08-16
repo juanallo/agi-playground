@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Game of Life Animation (Canvas)</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background-color: #000;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="gameOfLifeCanvas"></canvas>
+
+  <script>
+    const canvas = document.getElementById("gameOfLifeCanvas");
+    const context = canvas.getContext("2d");
+
+    canvas.width = 800;
+    canvas.height = 800;
+
+    const cellSize = 10;
+    const numRows = canvas.height / cellSize;
+    const numCols = canvas.width / cellSize;
+    const organisms = [
+      createRandomGrid(numRows, numCols),
+      createGliderGun(numRows, numCols, 50, 50),
+      createBlinker(numRows, numCols, 70, 70),
+    ];
+
+    function createRandomGrid(rows, cols) {
+      const grid = [];
+      for (let i = 0; i < rows; i++) {
+        const row = [];
+        for (let j = 0; j < cols; j++) {
+          row.push(Math.random() < 0.1 ? 1 : 0); // 10% chance of being alive
+        }
+        grid.push(row);
+      }
+      return grid;
+    }
+
+    function createGliderGun(rows, cols, offsetX, offsetY) {
+      const grid = Array.from({ length: rows }, () => Array.from({ length: cols }, () => 0));
+      const gun = [
+        [0, 0, 1, 1, 0, 0],
+        [0, 1, 0, 0, 1, 0],
+        [1, 0, 0, 0, 0, 1],
+        [1, 0, 0, 0, 0, 1],
+        [1, 0, 0, 0, 0, 1],
+        [0, 1, 0, 0, 1, 0],
+        [0, 0, 1, 1, 0, 0],
+      ];
+      for (let i = 0; i < gun.length; i++) {
+        for (let j = 0; j < gun[i].length; j++) {
+          grid[offsetY + i][offsetX + j] = gun[i][j];
+        }
+      }
+      return grid;
+    }
+
+    function createBlinker(rows, cols, offsetX, offsetY) {
+      const grid = Array.from({ length: rows }, () => Array.from({ length: cols }, () => 0));
+      const blinker = [
+        [1, 1, 1],
+      ];
+      for (let i = 0; i < blinker.length; i++) {
+        for (let j = 0; j < blinker[i].length; j++) {
+          grid[offsetY + i][offsetX + j] = blinker[i][j];
+        }
+      }
+      return grid;
+    }
+
+    function drawGrid(grid) {
+      context.clearRect(0, 0, canvas.width, canvas.height);
+      for (let i = 0; i < numRows; i++) {
+        for (let j = 0; j < numCols; j++) {
+          const cell = grid[i][j];
+          context.fillStyle = cell === 1 ? "#18d8ff" : (cell === 2 ? "#00ff00" : "#000");
+          context.fillRect(j * cellSize, i * cellSize, cellSize, cellSize);
+        }
+      }
+    }
+
+    function updateGrid(grid) {
+      const newGrid = createRandomGrid(numRows, numCols);
+      for (let i = 0; i < numRows; i++) {
+        for (let j = 0; j < numCols; j++) {
+          const cell = grid[i][j];
+          const neighbors = countNeighbors(grid, i, j);
+          if (cell === 1 && (neighbors < 2 || neighbors > 3)) {
+            newGrid[i][j] = 0; // Cell dies
+          } else if (cell === 0 && neighbors === 3) {
+            newGrid[i][j] = 1; // Cell is born
+          } else if (cell === 1 && neighbors === 3) {
+            newGrid[i][j] = 2; // Cell becomes a blinker
+          }
+        }
+      }
+      return newGrid;
+    }
+
+    function countNeighbors(grid, row, col) {
+      let count = 0;
+      for (let i = -1; i <= 1; i++) {
+        for (let j = -1; j <= 1; j++) {
+          if (i === 0 && j === 0) continue;
+          const newRow = row + i;
+          const newCol = col + j;
+          if (newRow >= 0 && newRow < numRows && newCol >= 0 && newCol < numCols) {
+            count += grid[newRow][newCol];
+          }
+        }
+      }
+      return count;
+    }
+
+    function animate() {
+      for (const organism of organisms) {
+        drawGrid(organism);
+        organism.splice(0, organism.length, ...updateGrid(organism));
+      }
+      requestAnimationFrame(debounce(animate, 600));
+    }
+
+    animate();
+
+    function debounce(func, delay) {
+        let timer;
+
+        return function (...args) {
+          clearTimeout(timer);
+
+          timer = setTimeout(() => {
+            func.apply(this, args);
+          }, delay);
+        };
+      }
+  </script>
+</body>
+</html>

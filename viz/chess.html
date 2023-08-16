@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chessboard with Unicode Pieces (Canvas)</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background-color: #fff;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="chessboardCanvas"></canvas>
+
+  <script>
+    const canvas = document.getElementById("chessboardCanvas");
+    const context = canvas.getContext("2d");
+
+    canvas.width = 800;
+    canvas.height = 800;
+
+    const squareSize = canvas.width / 8;
+    const darkSquareColor = "#b58863";
+    const lightSquareColor = "#f0d9b5";
+    const pieceColor = "#000000";
+
+    const chessboard = [
+      ["♜", "♞", "♝", "♛", "♚", "♝", "♞", "♜"],
+      ["♟", "♟", "♟", "♟", "♟", "♟", "♟", "♟"],
+      ["", "", "", "", "", "", "", ""],
+      ["", "", "", "", "", "", "", ""],
+      ["", "", "", "", "", "", "", ""],
+      ["", "", "", "", "", "", "", ""],
+      ["♙", "♙", "♙", "♙", "♙", "♙", "♙", "♙"],
+      ["♖", "♘", "♗", "♕", "♔", "♗", "♘", "♖"],
+    ];
+
+    function drawChessboard() {
+      for (let row = 0; row < 8; row++) {
+        for (let col = 0; col < 8; col++) {
+          const x = col * squareSize;
+          const y = row * squareSize;
+          const isDarkSquare = (row + col) % 2 === 1;
+
+          context.fillStyle = isDarkSquare ? darkSquareColor : lightSquareColor;
+          context.fillRect(x, y, squareSize, squareSize);
+
+          const piece = chessboard[row][col];
+          if (piece) {
+            context.font = "bold 72px Arial";
+            context.fillStyle = pieceColor;
+            context.fillText(piece, x + squareSize * 0.3, y + squareSize * 0.8);
+          }
+        }
+      }
+    }
+
+    drawChessboard();
+  </script>
+</body>
+</html>

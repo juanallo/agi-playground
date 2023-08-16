@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Matrix-Inspired AI Visualization with D3.js</title>
+  <script src="https://d3js.org/d3.v6.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+    }
+    svg {
+      background-color: #000000;
+      position: absolute;
+    }
+    circle.center {
+      fill: none;
+      stroke: #00ff00;
+      stroke-width: 2;
+    }
+    circle.point {
+      fill: #00ff00;
+      opacity: 0.5;
+    }
+    .matrix-rain, .matrix-char {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      font-family: 'Courier New', monospace;
+      font-size: 16px;
+      line-height: 16px;
+      white-space: nowrap;
+      color: #00ff00;
+      user-select: none;
+    }
+  </style>
+</head>
+<body>
+  <svg width="800" height="800">
+    <circle class="center" cx="400" cy="400" r="100"></circle>
+  </svg>
+  
+  <div class="matrix-rain"></div>
+
+  <script>
+    const svg = d3.select("svg");
+    const centerCircle = svg.select(".center");
+
+    const numLayers = 3;
+    const numPointsPerLayer = 100;
+    const layerRadii = [150, 250, 350];
+
+    const layers = d3.range(numLayers).map(layerIndex =>
+      d3.range(numPointsPerLayer).map(() => {
+        const angle = Math.random() * Math.PI * 2;
+        const radius = layerRadii[layerIndex];
+        return {
+          x: 400 + radius * Math.cos(angle),
+          y: 400 + radius * Math.sin(angle),
+          angle,
+          speed: 0.001 * (layerIndex + 1),
+        };
+      })
+    );
+
+    const pointElements = svg.selectAll("circle.point")
+      .data(layers)
+      .enter()
+      .selectAll("circle")
+      .data(d => d)
+      .enter()
+      .append("circle")
+      .attr("class", "point")
+      .attr("cx", d => d.x)
+      .attr("cy", d => d.y)
+      .attr("r", 5);
+
+    function animatePoints() {
+      pointElements
+        .attr("cx", d => d.x + 50 * Math.cos(d.angle + d.speed * Date.now()))
+        .attr("cy", d => d.y + 50 * Math.sin(d.angle + d.speed * Date.now()))
+        .on("end", animatePoints);
+
+      requestAnimationFrame(animatePoints);
+    }
+
+    animatePoints();
+
+    // Matrix rain animation
+    const matrixRainContainer = document.querySelector(".matrix-rain");
+
+    function createMatrixRain() {
+      const numColumns = Math.ceil(window.innerWidth / 16);
+      
+      for (let i = 0; i < numColumns; i++) {
+        const column = document.createElement("div");
+        column.className = "matrix-column";
+        
+        for (let j = 0; j < 20; j++) {
+          const char = document.createElement("div");
+          char.className = "matrix-char";
+          char.textContent = randomMatrixCharacter();
+          char.style.animationDelay = `${Math.random() * 1}s`;
+          column.appendChild(char);
+        }
+        
+        matrixRainContainer.appendChild(column);
+      }
+    }
+
+    function randomMatrixCharacter() {
+      const characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+      return characters[Math.floor(Math.random() * characters.length)];
+    }
+
+    createMatrixRain();
+  </script>
+</body>
+</html>

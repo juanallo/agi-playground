@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Asteroids Game Intro Animation</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background-color: #000;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="asteroidsIntroCanvas"></canvas>
+
+  <script>
+    const canvas = document.getElementById("asteroidsIntroCanvas");
+    const context = canvas.getContext("2d");
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const asteroids = [];
+    const numAsteroids = 10;
+
+    for (let i = 0; i < numAsteroids; i++) {
+      asteroids.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        radius: Math.random() * 20 + 10,
+        angle: Math.random() * Math.PI * 2,
+        speed: Math.random() * 0.5 + 0.1,
+      });
+    }
+
+    const spaceships = [];
+    const numSpaceships = 5;
+
+    for (let i = 0; i < numSpaceships; i++) {
+      spaceships.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        radius: 10,
+        angle: Math.random() * Math.PI * 2,
+        speed: Math.random() * 0.2 + 0.1,
+      });
+    }
+
+    function drawIntro() {
+      context.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Draw asteroids
+      context.fillStyle = "#777";
+      for (const asteroid of asteroids) {
+        context.beginPath();
+        context.moveTo(
+          asteroid.x + asteroid.radius * Math.cos(asteroid.angle),
+          asteroid.y + asteroid.radius * Math.sin(asteroid.angle)
+        );
+        context.lineTo(
+          asteroid.x + (asteroid.radius - 5) * Math.cos(asteroid.angle + 2),
+          asteroid.y + (asteroid.radius - 5) * Math.sin(asteroid.angle + 2)
+        );
+        context.lineTo(
+          asteroid.x + (asteroid.radius - 5) * Math.cos(asteroid.angle + 4),
+          asteroid.y + (asteroid.radius - 5) * Math.sin(asteroid.angle + 4)
+        );
+        context.lineTo(
+          asteroid.x + (asteroid.radius - 10) * Math.cos(asteroid.angle + 5),
+          asteroid.y + (asteroid.radius - 10) * Math.sin(asteroid.angle + 5)
+        );
+        context.lineTo(
+          asteroid.x + (asteroid.radius - 15) * Math.cos(asteroid.angle + 3),
+          asteroid.y + (asteroid.radius - 15) * Math.sin(asteroid.angle + 3)
+        );
+        context.closePath();
+        context.fill();
+
+        asteroid.x += asteroid.speed * Math.cos(asteroid.angle);
+        asteroid.y += asteroid.speed * Math.sin(asteroid.angle);
+
+        if (asteroid.x > canvas.width) {
+          asteroid.x = -asteroid.radius;
+        }
+        if (asteroid.y > canvas.height) {
+          asteroid.y = -asteroid.radius;
+        }
+      }
+
+      // Draw spaceships
+      context.fillStyle = "#00ff00";
+      for (const spaceship of spaceships) {
+        context.beginPath();
+        context.moveTo(
+          spaceship.x + spaceship.radius * Math.cos(spaceship.angle),
+          spaceship.y + spaceship.radius * Math.sin(spaceship.angle)
+        );
+        context.lineTo(
+          spaceship.x + (spaceship.radius - 5) * Math.cos(spaceship.angle - Math.PI / 4),
+          spaceship.y + (spaceship.radius - 5) * Math.sin(spaceship.angle - Math.PI / 4)
+        );
+        context.lineTo(
+          spaceship.x + (spaceship.radius - 5) * Math.cos(spaceship.angle + Math.PI / 4),
+          spaceship.y + (spaceship.radius - 5) * Math.sin(spaceship.angle + Math.PI / 4)
+        );
+        context.closePath();
+        context.fill();
+
+        spaceship.x += spaceship.speed * Math.cos(spaceship.angle);
+        spaceship.y += spaceship.speed * Math.sin(spaceship.angle);
+
+        if (spaceship.x > canvas.width) {
+          spaceship.x = -spaceship.radius;
+        }
+        if (spaceship.y > canvas.height) {
+          spaceship.y = -spaceship.radius;
+        }
+      }
+
+      requestAnimationFrame(drawIntro);
+    }
+
+    drawIntro();
+  </script>
+</body>
+</html>

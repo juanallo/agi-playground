@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Slower Matrix-Inspired Dropping Characters Animation (Canvas)</title>
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+        background-color: #000;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="matrixCanvas"></canvas>
+
+    <script>
+      const canvas = document.getElementById("matrixCanvas");
+      const context = canvas.getContext("2d");
+      const characters =
+        "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789./-+[]{}<>";
+
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      const columns = Math.floor(canvas.width / 16);
+      const columnSpeeds = [];
+
+      for (let i = 0; i < columns; i++) {
+        columnSpeeds.push(Math.random() * 0.001 + 0.25); // Slower speeds
+      }
+      let play = true;
+
+      function animateMatrix() {
+        context.fillStyle = "rgba(0, 0, 0, 1)";
+        context.fillRect(0, 0, canvas.width, canvas.height);
+        context.fillStyle = "#00ff00";
+        context.font = "16x 'Courier New', monospace";
+
+        for (let i = 0; i < columns; i++) {
+          let x = i * 26;
+          let y = columnSpeeds[i] * 100000;
+
+          for (let j = 0; j < 100; j++) {
+            const char = randomMatrixCharacter();
+            context.fillText(char, x, y);
+
+            if (y > canvas.height && Math.random() > 0.975) {
+              y = 0;
+            }
+
+            y += 16;
+          }
+
+          columnSpeeds[i] += Math.random() * 0.01 - 0.0005;
+          //   columnSpeeds[i] = Math.max(0.1, Math.min(columnSpeeds[i], 0.9)); // Adjust speed limits
+        }
+        
+        setTimeout(() => (play = false), 3000);
+        if (play) {
+          requestAnimationFrame(debounce(animateMatrix, 60));
+        }
+      }
+
+      function randomMatrixCharacter() {
+        return characters[Math.floor(Math.random() * characters.length)];
+      }
+
+      animateMatrix();
+
+      function debounce(func, delay) {
+        let timer;
+
+        return function (...args) {
+          clearTimeout(timer);
+
+          timer = setTimeout(() => {
+            func.apply(this, args);
+          }, delay);
+        };
+      }
+    </script>
+  </body>
+</html>

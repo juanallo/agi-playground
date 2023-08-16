@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Artistic Maze (Canvas)</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background-color: #000;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="artisticMazeCanvas"></canvas>
+
+  <script>
+    const canvas = document.getElementById("artisticMazeCanvas");
+    const context = canvas.getContext("2d");
+
+    canvas.width = 1600;
+    canvas.height = 1600;
+
+    const gridSize = 100;
+    const wallColor = "#5e5959";
+    const floorColor = "#2c2a2a";
+    const decorationColor = "#af6729";
+
+    const maze = [
+      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+      [1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1],
+      [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1],
+      [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 1],
+      [1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 0, 1, 0, 0, 1],
+      [1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 1, 1, 0, 1],
+      [1, 0, 0, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1],
+      [1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0, 1, 1],
+      [1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 0, 1, 0, 0, 1],
+      [1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 1, 1, 0, 1],
+      [1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1],
+      [1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1],
+      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    ];
+
+    // Ensure there's a path to the exit
+    for (let x = 1; x < maze[0].length - 1; x++) {
+      maze[maze.length - 2][x] = 0;
+    }
+
+    function drawMaze() {
+      context.clearRect(0, 0, canvas.width, canvas.height);
+
+      for (let y = 0; y < maze.length; y++) {
+        for (let x = 0; x < maze[y].length; x++) {
+          if (maze[y][x] === 1) {
+            context.fillStyle = wallColor;
+            context.fillRect(x * gridSize, y * gridSize, gridSize, gridSize);
+          } else {
+            context.fillStyle = floorColor;
+            context.fillRect(x * gridSize, y * gridSize, gridSize, gridSize);
+
+            if (Math.random() < 0.05) {
+              context.fillStyle = decorationColor;
+              const decorationSize = gridSize * 0.2;
+              context.fillRect(
+                x * gridSize + gridSize * 0.4,
+                y * gridSize + gridSize * 0.4,
+                decorationSize,
+                decorationSize
+              );
+            }
+          }
+        }
+      }
+    }
+
+    drawMaze();
+  </script>
+</body>
+</html>
