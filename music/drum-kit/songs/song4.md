@@ -1,0 +1,17 @@
+# Carnaval Jam
+
+D_D_D_D_J_S_D_D_D_D_J_S_D_D_D_D_
+S__S__P__P__S__S__P__P__S__S__P__P_
+H_A_H_H_A_H_A_H_H_A_H_H_A_H_H_A_H_
+/
+K__K__G__G__K__K__G__G__K__K__G__G_
+F_P_F_F_P_F_P_F_F_P_F_F_P_F_F_P_F_
+T_T_K_T_T_K_T_T_K_T_T_K_T_T_K_T_T_
+/
+J_S_D_D_D_D_J_S_D_D_D_D_J_S_D_D_D_
+P__P__S__S__P__P__S__S__P__P__S__S_
+A_H_H_A_H_H_A_H_H_A_H_H_A_H_H_A_H_H
+/
+G__G__K__K__G__G__K__K__G__G__K__K_
+P_F_F_P_F_F_P_F_F_P_F_F_P_F_F_P_F_F
+K_T_T_K_T_T_K_T_T_K_T_T_K_T_T_K_T_T

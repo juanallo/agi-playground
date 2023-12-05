@@ -1,0 +1,16 @@
+D_D_D_D_D_D_D_D_D_D_D_D_D_D_D_D_
+S__S__S__S__S__S__S__S__S__S__S__S_
+H_H_H_H_H_H_H_H_H_H_H_H_H_H_H_H_H
+/
+C_C_C_C__C_C_C_C__C_C_C_C__C_C_C_
+G__G__G___G__G__G___G__G__G___G__G_
+T_T_T_T__T_T_T_T__T_T_T_T__T_T_T_T
+/
+D_D_D_D_D_D_D_D_D_D_D_D_D_D_D_D_D
+/
+S__S__S__S__S__S__S__S__S__S__S__S_
+H_H_H_H_H_H_H_H_H_H_H_H_H_H_H_H_H_
+/
+C_C_C_C__C_C_C_C__C_C_C_C__C_C_C_C
+G__G__G___G__G__G___G__G__G___G__G_
+T_T_T_T__T_T_T_T__T_T_T_T__T_T_T_T_

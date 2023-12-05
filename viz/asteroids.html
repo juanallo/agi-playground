@@ -1,128 +1,212 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Asteroids Game Intro Animation</title>
-  <style>
-    body {
-      margin: 0;
-      overflow: hidden;
-      background-color: #000;
-    }
-  </style>
-</head>
-<body>
-  <canvas id="asteroidsIntroCanvas"></canvas>
+<html>
+  <head>
+    <title>Asteroids</title>
+    <style>
+      @font-face {
+        font-family: Mario;
+        src: url("mario.otf") format("opentype");
+      }
+    </style>
+  </head>
+  <body style="display: grid; align-items: center; justify-content: center">
+    <canvas
+      id="canvas"
+      width="800"
+      height="800"
+      style="border: 2px solid black"
+    ></canvas>
+    <script>
+      var canvas = document.getElementById("canvas");
+      var ctx = canvas.getContext("2d");
 
-  <script>
-    const canvas = document.getElementById("asteroidsIntroCanvas");
-    const context = canvas.getContext("2d");
+      var ship = {
+        x: canvas.width / 2 - 16,
+        y: canvas.height / 2 - 16,
+        vx: 0,
+        vy: 0,
+        rotation: 0,
+      };
 
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+      var asteroids = [];
+      var maxAsteroids = 10;
 
-    const asteroids = [];
-    const numAsteroids = 10;
+      var keysDown = {};
 
-    for (let i = 0; i < numAsteroids; i++) {
-      asteroids.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        radius: Math.random() * 20 + 10,
-        angle: Math.random() * Math.PI * 2,
-        speed: Math.random() * 0.5 + 0.1,
-      });
-    }
+      var arrowKeys = [37, 38, 39, 40];
 
-    const spaceships = [];
-    const numSpaceships = 5;
+      var gameOver = false;
 
-    for (let i = 0; i < numSpaceships; i++) {
-      spaceships.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        radius: 10,
-        angle: Math.random() * Math.PI * 2,
-        speed: Math.random() * 0.2 + 0.1,
-      });
-    }
+      addEventListener(
+        "keydown",
+        function (e) {
+          if (!gameOver && arrowKeys.includes(e.keyCode)) {
+            keysDown[e.keyCode] = true;
+            e.preventDefault();
+          }
+          if (gameOver && e.keyCode === 13) {
+            gameOver = false;
+            start();
+            e.preventDefault();
+          }
+        },
+        false
+      );
+      addEventListener(
+        "keyup",
+        function (e) {
+          if (!gameOver && arrowKeys.includes(e.keyCode)) {
+            delete keysDown[e.keyCode];
+            e.preventDefault();
+          }
+        },
+        false
+      );
 
-    function drawIntro() {
-      context.clearRect(0, 0, canvas.width, canvas.height);
+      function createAsteroid() {
+        var asteroid = {
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          vx: Math.random() * 5 - 2.5,
+          vy: Math.random() * 5 - 2.5,
+          radius: Math.random() * 10 + 30,
+        };
 
-      // Draw asteroids
-      context.fillStyle = "#777";
-      for (const asteroid of asteroids) {
-        context.beginPath();
-        context.moveTo(
-          asteroid.x + asteroid.radius * Math.cos(asteroid.angle),
-          asteroid.y + asteroid.radius * Math.sin(asteroid.angle)
-        );
-        context.lineTo(
-          asteroid.x + (asteroid.radius - 5) * Math.cos(asteroid.angle + 2),
-          asteroid.y + (asteroid.radius - 5) * Math.sin(asteroid.angle + 2)
-        );
-        context.lineTo(
-          asteroid.x + (asteroid.radius - 5) * Math.cos(asteroid.angle + 4),
-          asteroid.y + (asteroid.radius - 5) * Math.sin(asteroid.angle + 4)
-        );
-        context.lineTo(
-          asteroid.x + (asteroid.radius - 10) * Math.cos(asteroid.angle + 5),
-          asteroid.y + (asteroid.radius - 10) * Math.sin(asteroid.angle + 5)
-        );
-        context.lineTo(
-          asteroid.x + (asteroid.radius - 15) * Math.cos(asteroid.angle + 3),
-          asteroid.y + (asteroid.radius - 15) * Math.sin(asteroid.angle + 3)
-        );
-        context.closePath();
-        context.fill();
-
-        asteroid.x += asteroid.speed * Math.cos(asteroid.angle);
-        asteroid.y += asteroid.speed * Math.sin(asteroid.angle);
-
-        if (asteroid.x > canvas.width) {
-          asteroid.x = -asteroid.radius;
-        }
-        if (asteroid.y > canvas.height) {
-          asteroid.y = -asteroid.radius;
-        }
+        asteroids.push(asteroid);
       }
 
-      // Draw spaceships
-      context.fillStyle = "#00ff00";
-      for (const spaceship of spaceships) {
-        context.beginPath();
-        context.moveTo(
-          spaceship.x + spaceship.radius * Math.cos(spaceship.angle),
-          spaceship.y + spaceship.radius * Math.sin(spaceship.angle)
-        );
-        context.lineTo(
-          spaceship.x + (spaceship.radius - 5) * Math.cos(spaceship.angle - Math.PI / 4),
-          spaceship.y + (spaceship.radius - 5) * Math.sin(spaceship.angle - Math.PI / 4)
-        );
-        context.lineTo(
-          spaceship.x + (spaceship.radius - 5) * Math.cos(spaceship.angle + Math.PI / 4),
-          spaceship.y + (spaceship.radius - 5) * Math.sin(spaceship.angle + Math.PI / 4)
-        );
-        context.closePath();
-        context.fill();
+      function animate() {
+        let shipSpriteId = "ship-n";
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        spaceship.x += spaceship.speed * Math.cos(spaceship.angle);
-        spaceship.y += spaceship.speed * Math.sin(spaceship.angle);
+        if (37 in keysDown) {
+          shipSpriteId = "ship-w";
+          ship.x -= 5;
+        }
+        if (39 in keysDown) {
+          shipSpriteId = "ship-e";
+          ship.x += 5;
+        }
 
-        if (spaceship.x > canvas.width) {
-          spaceship.x = -spaceship.radius;
+        if (38 in keysDown) {
+          shipSpriteId = "ship-n"
+          ship.y -= 5;
+          if(37 in keysDown) {
+            shipSpriteId = "ship-nw"
+          }
+          if(39 in keysDown) {
+            shipSpriteId = "ship-ne"
+          }
         }
-        if (spaceship.y > canvas.height) {
-          spaceship.y = -spaceship.radius;
+        if (40 in keysDown) {
+          shipSpriteId = "ship-s";
+          ship.y += 5;
+          if(37 in keysDown) {
+            shipSpriteId = "ship-sw"
+          }
+          if(39 in keysDown) {
+            shipSpriteId = "ship-se"
+          }
         }
+
+        if (ship.x < 0 || ship.x > canvas.width) {
+          ship.x = canvas.width - ship.x;
+        }
+
+        if (ship.y < 0 || ship.y > canvas.height) {
+          ship.y = canvas.height - ship.y;
+        }
+
+        // Move the asteroids
+        for (var i = 0; i < asteroids.length; i++) {
+          var asteroid = asteroids[i];
+
+          asteroid.x += asteroid.vx;
+          asteroid.y += asteroid.vy;
+
+          // Check for collisions between the ship and the asteroids
+          if (
+            Math.sqrt((ship.x - asteroid.x) ** 2 + (ship.y - asteroid.y) ** 2) <
+            asteroid.radius
+          ) {
+            // Game over!
+            gameOver = true;
+            ctx.fillStyle = "#003300";
+            ctx.font = "20px Mario, sans-serif";
+
+            const gameOverMessage = "GAME OVER";
+
+            ctx.fillText(
+              gameOverMessage,
+              canvas.width / 2 - ctx.measureText(gameOverMessage).width / 2,
+              canvas.height / 2
+            );
+
+            ctx.font = "12px Mario, sans-serif";
+            ctx.fillStyle = "black";
+
+            const newGameMessage = "Press Enter to try again";
+            ctx.fillText(
+              newGameMessage,
+              canvas.width / 2 - ctx.measureText(newGameMessage).width / 2,
+              canvas.height / 2 + 40
+            );
+            return;
+          }
+
+          if (asteroid.x < 0 || asteroid.x > canvas.width) {
+            asteroid.x = canvas.width - asteroid.x;
+          }
+
+          if (asteroid.y < 0 || asteroid.y > canvas.height) {
+            asteroid.y = canvas.height - asteroid.y;
+          }
+        }
+
+        // Draw the ship
+        const img = document.getElementById(shipSpriteId);
+        ctx.drawImage(img, ship.x, ship.y);
+
+        // Draw the asteroids
+        for (var i = 0; i < asteroids.length; i++) {
+          var asteroid = asteroids[i];
+          const img = document.getElementById("asteroid");
+          const length = asteroid.radius;
+          ctx.drawImage(img, asteroid.x, asteroid.y, length, length);
+        }
+
+        requestAnimationFrame(animate);
       }
 
-      requestAnimationFrame(drawIntro);
-    }
+      window.onload = function () {
+        start();
+      };
 
-    drawIntro();
-  </script>
-</body>
+      function start() {
+        ship = {
+          x: canvas.width / 2 - 16,
+          y: canvas.height / 2 - 16,
+          vx: 0,
+          vy: 0,
+          rotation: 0,
+        };
+        asteroids = [];
+        keysDown = {};
+        for (var i = 0; i < maxAsteroids; i++) {
+          createAsteroid();
+        }
+
+        animate();
+      }
+    </script>
+    <h1 style="font-family: Mario; visibility: hidden">title</h1>
+    <img src="sprites/ship-n.png" id="ship-n" style="display: none" />
+    <img src="sprites/ship-ne.png" id="ship-ne" style="display: none" />
+    <img src="sprites/ship-nw.png" id="ship-nw" style="display: none" />
+    <img src="sprites/ship-s.png" id="ship-s" style="display: none" />
+    <img src="sprites/ship-se.png" id="ship-se" style="display: none" />
+    <img src="sprites/ship-sw.png" id="ship-sw" style="display: none" />
+    <img src="sprites/ship-w.png" id="ship-w" style="display: none" />
+    <img src="sprites/ship-e.png" id="ship-e" style="display: none" />
+    <img src="sprites/asteroid.png" id="asteroid" style="display: none" />
+  </body>
 </html>

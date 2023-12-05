@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JS Drum Kit</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" href="https://fav.farm/🔥" />
+  </head>
+  <body>
+    <div class="shell">
+      <div class="keys">
+        <div data-key="65" class="key">
+          <kbd>A</kbd>
+          <span class="sound">clap</span>
+        </div>
+        <div data-key="83" class="key">
+          <kbd>S</kbd>
+          <span class="sound">hihat</span>
+        </div>
+        <div data-key="68" class="key">
+          <kbd>D</kbd>
+          <span class="sound">kick</span>
+        </div>
+        <div data-key="70" class="key">
+          <kbd>F</kbd>
+          <span class="sound">openhat</span>
+        </div>
+        <div data-key="71" class="key">
+          <kbd>G</kbd>
+          <span class="sound">boom</span>
+        </div>
+        <div data-key="72" class="key">
+          <kbd>H</kbd>
+          <span class="sound">ride</span>
+        </div>
+        <div data-key="74" class="key">
+          <kbd>J</kbd>
+          <span class="sound">snare</span>
+        </div>
+        <div data-key="75" class="key">
+          <kbd>K</kbd>
+          <span class="sound">tom</span>
+        </div>
+        <div data-key="76" class="key">
+          <kbd>L</kbd>
+          <span class="sound">tink</span>
+        </div>
+      </div>
+      <div class="song">
+        <form>
+          <textarea
+            title="Type your song"
+            id="song-text"
+            name="song"
+          ></textarea>
+          <button>Play</button>
+        </form>
+      </div>
+    </div>
+
+    <audio data-key="65" src="sounds/clap.wav"></audio>
+    <audio data-key="83" src="sounds/hihat.wav"></audio>
+    <audio data-key="68" src="sounds/kick.wav"></audio>
+    <audio data-key="70" src="sounds/openhat.wav"></audio>
+    <audio data-key="71" src="sounds/boom.wav"></audio>
+    <audio data-key="72" src="sounds/ride.wav"></audio>
+    <audio data-key="74" src="sounds/snare.wav"></audio>
+    <audio data-key="75" src="sounds/tom.wav"></audio>
+    <audio data-key="76" src="sounds/tink.wav"></audio>
+
+    <script>
+      (function hydrate() {
+        const params = new URLSearchParams(document.location.search);
+        const song = params.get("song");
+        if (song) {
+          document.querySelector("#song-text").value = decodeURI(
+            song.toString()
+          );
+        }
+
+        function play(keyCode, volume = 1) {
+          const elm = document.querySelector(`.key[data-key="${keyCode}"]`);
+          if (elm) {
+            elm.classList.add("playing");
+            const sound = document.querySelector(
+              `audio[data-key="${keyCode}"]`
+            );
+            sound.currentTime = 0;
+            sound.volume = volume;
+            sound.play();
+          }
+        }
+
+        function stop(keyCode) {
+          const elm = document.querySelector(`.key[data-key="${keyCode}"]`);
+          if (elm) {
+            elm.classList.remove("playing");
+          }
+        }
+        const isInputSelected = () => {
+          return document.activeElement.tagName === "TEXTAREA";
+        };
+
+        document.addEventListener("keydown", (e) => {
+          const keyCode = e.keyCode;
+          if (!isInputSelected()) {
+            play(keyCode);
+          }
+        });
+
+        document.addEventListener("keyup", (e) => {
+          const keyCode = e.keyCode;
+          if (!isInputSelected()) {
+            stop(keyCode);
+          }
+        });
+        document.querySelector("form").addEventListener("submit", (e) => {
+          e.preventDefault();
+          const input = document.querySelector("#song-text");
+          let url = new URL(window.location.href);
+          url.searchParams.set("song", encodeURI(input.value.toUpperCase()));
+          history.pushState({}, "", url.href);
+          playSections(input.value.toUpperCase());
+        });
+
+        function wait(time) {
+          return new Promise((r) => setTimeout(r, time));
+        }
+
+        async function playSong(song) {
+          const notes = song.split("");
+
+          for (const note of notes) {
+            const keyCode = note.toUpperCase().charCodeAt(0);
+            play(keyCode);
+            await wait(200);
+            stop(keyCode);
+          }
+        }
+
+        async function playSongWithDelays(song) {
+          const vol = {
+            104: 1, //h
+            109: 0.5, //m
+            108: 0.2, //l
+          };
+          const notes = song.split("-");
+
+          for (const data of notes) {
+            const [note, delay] = data.split(",");
+            const keyCode = note.charCodeAt(0);
+            const volume = vol[note.charCodeAt(1)];
+            play(keyCode, volume);
+            await wait(delay);
+            stop(keyCode);
+          }
+        }
+
+        async function playMultiple(song) {
+          const lines = song.split("\n");
+
+          const promises = [];
+
+          for (const line of lines) {
+            if (line.includes("-")) {
+              promises.push(playSongWithDelays(line));
+            } else {
+              promises.push(playSong(line));
+            }
+          }
+          return Promise.all(promises);
+        }
+
+        async function playSections(song) {
+          const sections = song.split("/");
+          for (const section of sections) {
+            await playMultiple(section);
+          }
+        }
+      })();
+    </script>
+  </body>
+</html>

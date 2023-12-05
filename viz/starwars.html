@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Star Wars Opening Crawl (Floor Perspective)</title>
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+        background-color: #000;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="starWarsCanvas"></canvas>
+
+    <script>
+      const canvas = document.getElementById("starWarsCanvas");
+      const context = canvas.getContext("2d");
+
+      canvas.width = 800;
+      canvas.height = 800;
+
+      const text = [
+        "Episode IV",
+        "A NEW HOPE",
+        "",
+        "It is a period of civil war.",
+        "Rebel spaceships, striking",
+        "from a hidden base, have",
+        "won their first victory",
+        "against the evil Galactic",
+        "Empire.",
+        "",
+        "During the battle, Rebel",
+        "spies managed to steal",
+        "secret plans to the Empire's",
+        "ultimate weapon, the",
+        "DEATH STAR, an armored",
+        "space station with enough",
+        "power to destroy an entire",
+        "planet.",
+        "",
+        "Pursued by the Empire's",
+        "sinister agents...",
+      ];
+
+      let yOffset = canvas.height - 32;
+      let runs = 0;
+
+      function draw() {
+        // let tempyOffset = yOffset
+        // let baseSize = 5;
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        context.fillStyle = "#ffea00";
+
+        // baseSize = Math.max(0, 32 - text.length + 1 - runs * 2)
+
+        // for (let i = 0; i < text.length; i++) {
+        //   const fontSize =  baseSize + i*2;
+
+        //   context.font = `${fontSize}px 'Arial'`;
+        //   tempyOffset += fontSize
+        //   context.fillText(
+        //     text[i],
+        //     canvas.width / 2 - context.measureText(text[i]).width / 2,
+        //     tempyOffset
+        //   );
+        //   console.log(text[i], tempyOffset, fontSize)
+        // }
+        // runs++
+        // yOffset -= 32;
+        // if(runs < 40) {
+        //     requestAnimationFrame(debounce(draw, 256));
+        // }
+        let offset = 800;
+        let j = 0
+        context.font = `${32}px 'Arial'`;
+        console.log(context.measureText('M').width)
+        for (let i = 0; i < text.length; i++) {
+          //const size = Math.floor(10*Math.log2(i) + i - j) ;
+          //console.log(size)
+        //   const size = 32 - (j % 2 ? j - 1 : j) + i - Math.log2(i)
+          const size = Math.max(0,32 - i * 1.6)
+          context.font = `${size}px 'Arial'`;
+          offset -= size;
+          const txt = text[i - 1];
+          context.fillText(
+            'MMMMMMMMMMMMMMMMMMMMMMMMMMMMMM',
+            // 0,
+            canvas.width / 2 - context.measureText('MMMMMMMMMMMMMMMMMMMMMMMMMMMMMM').width / 2,
+            offset
+          );
+          j++
+        }
+      }
+
+      draw();
+
+      function debounce(func, delay) {
+        let timer;
+
+        return function (...args) {
+          clearTimeout(timer);
+
+          timer = setTimeout(() => {
+            func.apply(this, args);
+          }, delay);
+        };
+      }
+
+      function fibonacci(num) {
+        var a = 1,
+          b = 0,
+          temp;
+
+        while (num >= 0) {
+          temp = a;
+          a = a + b;
+          b = temp;
+          num--;
+        }
+
+        return b;
+      }
+    </script>
+  </body>
+</html>

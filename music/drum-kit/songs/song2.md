@@ -1,0 +1,17 @@
+# Rock n' Roll Ride
+
+D_D_D_D_D_D_D_D_D_D_D_D_D_D_D_D_
+S__S__S__S__S__S__S__S__S__S__S__S__
+H_H_H_H_H_H_H_H_H_H_H_H_H_H_H_H_H
+/
+T_T__T__T__T__T__T__T__T__T__T_T_T_
+F__F__F__F__F__F__F__F__F__F__F__F__
+K_K__K__K__K__K__K__K__K__K__K__K_K_
+/
+D_D_D_D_D_D_D_D_D_D_D_D_D_D_D_D_D_
+S__S__S__S__S__S__S__S__S__S__S__S__S
+H_H_H_H_H_H_H_H_H_H_H_H_H_H_H_H_H_H
+/
+T_T__T__T__T__T__T__T__T__T__T__T_T
+F__F__F__F__F__F__F__F__F__F__F__F__F
+K_K__K__K__K__K__K__K__K__K__K__K_K_
